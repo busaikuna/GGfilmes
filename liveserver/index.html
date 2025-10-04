@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GG Filmes & Games - Sua Plataforma de Entretenimento</title>
+    <link rel="stylesheet" href="../public/css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img class="logo-img" src="../public/icons/logo.png" alt="">
+                </div>
+                
+                <nav class="nav-menu">
+                    <a href="#home" class="nav-link active">Início</a>
+                    <a href="#movies" class="nav-link">Filmes</a>
+                    <a href="#games" class="nav-link">Games</a>
+                    <a href="#categories" class="nav-link">Categorias</a>
+                    <a href="#my-list" class="nav-link">Minha Lista</a>
+                </nav>
+
+                <div class="header-actions">
+                    <div class="search-container">
+                        <input type="text" id="searchInput" class="search-input" placeholder="Buscar filmes, games...">
+                        <button class="search-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                    <div class="user-menu">
+                        <img src="https://ui-avatars.com/api/?name=User&background=6366f1&color=fff" alt="User" class="user-avatar">
+                        <i class="fas fa-caret-down"></i>
+                        <div class="dropdown-menu">
+                            <a href="#profile"><i class="fas fa-user"></i> Perfil</a>
+                            <a href="#settings"><i class="fas fa-cog"></i> Configurações</a>
+                            <a href="#logout"><i class="fas fa-sign-out-alt"></i> Sair</a>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div id="searchResults" class="search-results hidden">
+        <div class="container">
+            <h3>Resultados da Busca</h3>
+            <div id="resultsGrid" class="results-grid"></div>
+        </div>
+    </div>
+
+    <section class="hero">
+        <div class="hero-background">
+            <img src="https://imgs.search.brave.com/2nxclGQ6jFwF9_2d1lDHBN19DmSb2-Td7RGVsqL83Ig/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJhY2Nlc3Mu/Y29tL2Z1bGwvNzUx/NC5qcGc" alt="Hero Background">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="container">
+            <div class="hero-content">
+                <span class="hero-badge">
+                    <i class="fas fa-star"></i> Em Destaque
+                </span>
+                <h1 class="hero-title">Inception</h1>
+                <div class="hero-meta">
+                    <span class="rating"><i class="fas fa-star"></i> 8.8</span>
+                    <span>2010</span>
+                    <span>Ficção Científica</span>
+                    <span class="quality-badge">4K</span>
+                </div>
+                <p class="hero-description">
+                    Um ladrão que rouba segredos corporativos através do uso da tecnologia de compartilhamento de sonhos recebe a tarefa inversa de plantar uma ideia na mente de um CEO.
+                </p>
+                <div class="hero-actions">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-play"></i> Assistir Agora
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-info-circle"></i> Mais Informações
+                    </button>
+                    <button class="btn btn-icon">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button class="btn btn-icon">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Filter -->
+    <section class="categories-filter">
+        <div class="container">
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">Todos</button>
+                <button class="filter-tab" data-filter="action">Ação</button>
+                <button class="filter-tab" data-filter="rpg">RPG</button>
+                <button class="filter-tab" data-filter="horror">Terror</button>
+                <button class="filter-tab" data-filter="scifi">Ficção</button>
+                <button class="filter-tab" data-filter="adventure">Aventura</button>
+                <button class="filter-tab" data-filter="drama">Drama</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Movies Section -->
+    <section class="content-section">
+        <div class="container">
+            <div class="section-header">
+                <h2><i class="fas fa-film"></i> Filmes em Destaque</h2>
+                <a href="#" class="see-all">Ver Todos <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="carousel-container">
+                <button class="carousel-btn prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="carousel" id="moviesCarousel">
+                    <!-- Movies will be dynamically loaded -->
+                </div>
+                <button class="carousel-btn next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trending Section -->
+    <section class="content-section">
+        <div class="container">
+            <div class="section-header">
+                <h2><i class="fas fa-fire"></i> Tendências da Semana</h2>
+                <a href="#" class="see-all">Ver Todos <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="carousel-container">
+                <button class="carousel-btn prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="carousel" id="trendingCarousel">
+                    <!-- Trending content will be dynamically loaded -->
+                </div>
+                <button class="carousel-btn next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Games Section -->
+    <section class="content-section">
+        <div class="container">
+            <div class="section-header">
+                <h2><i class="fas fa-gamepad"></i> Games em Destaque</h2>
+                <a href="#" class="see-all">Ver Todos <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="carousel-container">
+                <button class="carousel-btn prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="carousel" id="gamesCarousel">
+                    <!-- Games will be dynamically loaded -->
+                </div>
+                <button class="carousel-btn next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recommended Section -->
+    <section class="content-section">
+        <div class="container">
+            <div class="section-header">
+                <h2><i class="fas fa-magic"></i> Recomendados Para Você</h2>
+                <a href="#" class="see-all">Ver Todos <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="carousel-container">
+                <button class="carousel-btn prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="carousel" id="recommendedCarousel">
+                    <!-- Recommended content will be dynamically loaded -->
+                </div>
+                <button class="carousel-btn next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo">
+                        <i class="fas fa-gamepad"></i>
+                        <span>GG<span class="highlight">FLIX</span></span>
+                    </div>
+                    <p>Sua plataforma completa de entretenimento com os melhores filmes e games.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Navegação</h4>
+                    <ul>
+                        <li><a href="#">Início</a></li>
+                        <li><a href="#">Filmes</a></li>
+                        <li><a href="#">Games</a></li>
+                        <li><a href="#">Categorias</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Suporte</h4>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Contato</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Newsletter</h4>
+                    <p>Receba novidades e lançamentos</p>
+                    <div class="newsletter-form">
+                        <input type="email" placeholder="Seu e-mail">
+                        <button><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 GGFlix. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Detail Modal -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-body">
+                <div class="modal-video">
+                    <iframe id="trailerVideo" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="modal-info">
+                    <h2 id="modalTitle"></h2>
+                    <div class="modal-meta">
+                        <span class="rating" id="modalRating"></span>
+                        <span id="modalYear"></span>
+                        <span id="modalGenre"></span>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-play"></i> Assistir
+                        </button>
+                        <button class="btn btn-icon" id="addToListBtn">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <button class="btn btn-icon" id="favoriteBtn">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                        <button class="btn btn-icon" id="shareBtn">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                    <div class="modal-description">
+                        <h3>Sinopse</h3>
+                        <p id="modalDescription"></p>
+                    </div>
+                    <div class="modal-details">
+                        <div class="detail-item">
+                            <strong>Estúdio:</strong>
+                            <span id="modalStudio"></span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Duração:</strong>
+                            <span id="modalDuration"></span>
+                        </div>
+                    </div>
+                    <div class="rating-section">
+                        <h3>Avalie este conteúdo</h3>
+                        <div class="star-rating">
+                            <i class="fas fa-star" data-rating="1"></i>
+                            <i class="fas fa-star" data-rating="2"></i>
+                            <i class="fas fa-star" data-rating="3"></i>
+                            <i class="fas fa-star" data-rating="4"></i>
+                            <i class="fas fa-star" data-rating="5"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content login-modal">
+            <button class="modal-close">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="login-container">
+                <h2>Bem-vindo de volta!</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label>E-mail</label>
+                        <input type="email" required placeholder="seu@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Senha</label>
+                        <input type="password" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        Entrar
+                    </button>
+                </form>
+                <div class="divider">
+                    <span>ou</span>
+                </div>
+                <button class="btn btn-google">
+                    <i class="fab fa-google"></i> Continuar com Google
+                </button>
+                <p class="login-footer">
+                    Não tem uma conta? <a href="#" id="showRegister">Cadastre-se</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../public/js/script.js"></script>
+</body>
+</html>
