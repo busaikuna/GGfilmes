@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://ggfilmes.onrender.com/api";
+const API_BASE_URL = "http://127.0.0.1:5000/api";
 let moviesData = [];
 let gamesData = [];
 let allContent = [];
@@ -6,6 +6,8 @@ let filteredContent = [];
 let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 let myList = JSON.parse(localStorage.getItem('myList')) || [];
 let userRatings = JSON.parse(localStorage.getItem('userRatings')) || {};
+
+console.log(API_BASE_URL)
 
 document.addEventListener('DOMContentLoaded', async () => {
     await loadData();

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GG Filmes & Games - Sua Plataforma de Entretenimento</title>
-    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head> 
 <body>
@@ -12,7 +12,7 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <img class="logo-img" src="/icons/logo.png" alt="">
+                    <img class="logo-img" src="{{url_for('static', filename='icons/logo.png')}}" alt="logo">
                 </div>
                 
                 <nav class="nav-menu">
@@ -97,7 +97,6 @@
         </div>
     </section>
 
-    <!-- Categories Filter -->
     <section class="categories-filter">
         <div class="container">
             <div class="filter-tabs">
@@ -112,7 +111,6 @@
         </div>
     </section>
 
-    <!-- Movies Section -->
     <section class="content-section">
         <div class="container">
             <div class="section-header">
@@ -124,7 +122,6 @@
                     <i class="fas fa-chevron-left"></i>
                 </button>
                 <div class="carousel" id="moviesCarousel">
-                    <!-- Movies will be dynamically loaded -->
                 </div>
                 <button class="carousel-btn next">
                     <i class="fas fa-chevron-right"></i>
@@ -133,7 +130,6 @@
         </div>
     </section>
 
-    <!-- Trending Section -->
     <section class="content-section">
         <div class="container">
             <div class="section-header">
@@ -145,7 +141,6 @@
                     <i class="fas fa-chevron-left"></i>
                 </button>
                 <div class="carousel" id="trendingCarousel">
-                    <!-- Trending content will be dynamically loaded -->
                 </div>
                 <button class="carousel-btn next">
                     <i class="fas fa-chevron-right"></i>
@@ -154,7 +149,6 @@
         </div>
     </section>
 
-    <!-- Games Section -->
     <section class="content-section">
         <div class="container">
             <div class="section-header">
@@ -166,7 +160,6 @@
                     <i class="fas fa-chevron-left"></i>
                 </button>
                 <div class="carousel" id="gamesCarousel">
-                    <!-- Games will be dynamically loaded -->
                 </div>
                 <button class="carousel-btn next">
                     <i class="fas fa-chevron-right"></i>
@@ -175,7 +168,6 @@
         </div>
     </section>
 
-    <!-- Recommended Section -->
     <section class="content-section">
         <div class="container">
             <div class="section-header">
@@ -187,7 +179,6 @@
                     <i class="fas fa-chevron-left"></i>
                 </button>
                 <div class="carousel" id="recommendedCarousel">
-                    <!-- Recommended content will be dynamically loaded -->
                 </div>
                 <button class="carousel-btn next">
                     <i class="fas fa-chevron-right"></i>
@@ -195,8 +186,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
@@ -246,7 +235,6 @@
         </div>
     </footer>
 
-    <!-- Detail Modal -->
     <div id="detailModal" class="modal">
         <div class="modal-content">
             <button class="modal-close">
@@ -306,7 +294,6 @@
         </div>
     </div>
 
-    <!-- Login Modal -->
     <div id="loginModal" class="modal">
         <div class="modal-content login-modal">
             <button class="modal-close">
@@ -339,7 +326,6 @@
             </div>
         </div>
     </div>
-
-    <script src="/js/script.js"></script>
+    <script src="{{url_for('static', filename='js/script.js')}}"></script>
 </body>
 </html>
