@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://127.0.0.1:5000/api";
+const API_BASE_URL = "https://ggfilmes.onrender.com/api";
 let moviesData = [];
 let gamesData = [];
 let allContent = [];
@@ -6,8 +6,6 @@ let filteredContent = [];
 let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 let myList = JSON.parse(localStorage.getItem('myList')) || [];
 let userRatings = JSON.parse(localStorage.getItem('userRatings')) || {};
-
-console.log(API_BASE_URL)
 
 document.addEventListener('DOMContentLoaded', async () => {
     await loadData();
@@ -17,6 +15,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     initializeModals();
     initializeHeader();
     loadRecommendations();
+
+    removeLoading();
 });
 
 async function loadData() {
@@ -40,9 +40,14 @@ async function loadData() {
             studio: movie.production_companies ? movie.production_companies[0]?.name || "Desconhecido" : "Desconhecido",
             duration: "—",
             description: movie.overview || "Sem descrição.",
+            backdrop: movie.backdrop_path
+                ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
+                : null,
+
             image: movie.poster_path
                 ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
                 : "/placeholder.svg?height=330&width=220",
+
             trailer: "#",
             type: "movie"
         }));
@@ -174,9 +179,14 @@ async function initializeSearch() {
                     year: movie.release_date ? movie.release_date.split("-")[0] : "N/A",
                     genre: "movie",
                     rating: movie.vote_average || 0,
+                    backdrop: movie.backdrop_path
+                        ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
+                        : (movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : "/placeholder.svg"),
+
                     image: movie.poster_path
                         ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                        : "/placeholder.svg?height=330&width=220",
+                        : "/placeholder.svg",
+
                     description: movie.overview || "",
                     type: "movie"
                 })),
@@ -214,22 +224,33 @@ function initializeFilters() {
 
             const filter = tab.dataset.filter;
 
+            let filteredMovies = [];
+            let filteredGames = [];
+
             if (filter === 'all') {
-                filteredContent = [...allContent];
+                filteredMovies = moviesData;
+                filteredGames = gamesData;
             } else {
-                filteredContent = allContent.filter(item => {
+                filteredMovies = moviesData.filter(item => {
+                    if (!item.genre) return false;
+                    if (Array.isArray(item.genre)) return item.genre.includes(filter);
+                    return item.genre === filter;
+                });
+
+                filteredGames = gamesData.filter(item => {
                     if (!item.genre) return false;
                     if (Array.isArray(item.genre)) return item.genre.includes(filter);
                     return item.genre === filter;
                 });
             }
 
-
-            renderCarousel('moviesCarousel', filteredContent.filter(item => item.type === 'movie'));
-            renderCarousel('gamesCarousel', filteredContent.filter(item => item.type === 'game'));
+            renderCarousel('moviesCarousel', filteredMovies);
+            renderCarousel('gamesCarousel', filteredGames);
+            renderCarousel('categoriesCarousel', [...filteredMovies, ...filteredGames]);
         });
     });
 }
+
 
 function initializeModals() {
     const detailModal = document.getElementById('detailModal');
@@ -338,7 +359,7 @@ function updateStars(stars, rating) {
 }
 
 
-function openDetailModal(item) {
+async function openDetailModal(item) {
     const modal = document.getElementById('detailModal');
     modal.dataset.currentItem = item.id;
 
@@ -349,7 +370,23 @@ function openDetailModal(item) {
     document.getElementById('modalDescription').textContent = item.description;
     document.getElementById('modalStudio').textContent = item.studio;
     document.getElementById('modalDuration').textContent = item.duration;
-    document.getElementById('trailerVideo').src = item.trailer;
+    const trailerIframe = document.getElementById('trailerVideo');
+
+    if (item.type === 'game' && item.trailer && item.trailer !== "#") {
+        trailerIframe.src = item.trailer;
+        trailerIframe.style.display = 'block';
+    } else {
+        trailerIframe.src = "";
+        trailerIframe.style.display = 'none';
+    }
+
+    if (item.type === 'movie') {
+    const trailerLink = await fetchMovieTrailer(item.id);
+    trailerIframe.src = trailerLink || "";
+    trailerIframe.style.display = trailerLink ? 'block' : 'none';
+}
+
+
 
     const addToListBtn = document.getElementById('addToListBtn');
     const favoriteBtn = document.getElementById('favoriteBtn');
@@ -403,20 +440,18 @@ function toggleFavorite(itemId) {
 }
 
 function updateHero(item) {
-    const heroTitle = document.querySelector('.hero-title');
-    const heroDesc = document.querySelector('.hero-description');
-    const heroMetaRating = document.querySelector('.hero .rating');
-    const heroMetaYear = document.querySelector('.hero-meta span:nth-child(2)');
-    const heroMetaGenre = document.querySelector('.hero-meta span:nth-child(3)');
     const heroBackground = document.querySelector('.hero-background img');
 
-    heroTitle.textContent = item.title;
-    heroDesc.textContent = item.description;
-    heroMetaRating.innerHTML = `<i class="fas fa-star"></i> ${item.rating}`;
-    heroMetaYear.textContent = item.year;
-    heroMetaGenre.textContent = item.genre.toUpperCase();
-    heroBackground.src = item.image;
+    const heroImage = item.backdrop || item.image;
+    heroBackground.src = heroImage;
+
+    document.querySelector('.hero-title').textContent = item.title;
+    document.querySelector('.hero-description').textContent = item.description;
+    document.querySelector('.hero .rating').innerHTML = `<i class="fas fa-star"></i> ${item.rating}`;
+    document.querySelector('.hero-meta span:nth-child(2)').textContent = item.year;
+    document.querySelector('.hero-meta span:nth-child(3)').textContent = item.genre.toUpperCase();
 }
+
 
 
 
@@ -445,4 +480,21 @@ if (mobileMenuBtn) {
     mobileMenuBtn.addEventListener('click', () => {
         navMenu.classList.toggle('active');
     });
+}
+
+async function fetchMovieTrailer(movieId) {
+    const res = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=be978f4ae3645a74d02857bed62a7ca7`);
+    const data = await res.json();
+    const trailer = data.results.find(v => v.type === "Trailer" && v.site === "YouTube");
+    return trailer ? `https://www.youtube.com/embed/${trailer.key}` : null;
+}
+
+
+function removeLoading() {
+    const loader = document.querySelector('.loading');
+    if (loader) {
+        loader.style.display = 'none';
+    }
+
+    document.body.style.overflowY = 'auto';
 }

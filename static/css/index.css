@@ -30,7 +30,24 @@ body {
     color: var(--text);
     line-height: 1.6;
     overflow-x: hidden;
+    overflow-y: hidden;
 }
+
+.loading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #0f0f1e;
+    z-index: 999;
+}
+.loading img{
+    width: 200px;
+}
+
 .logo-img{
     width: 200px;
 }
@@ -38,7 +55,6 @@ body {
 .container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 20px;
 }
 
 /* Header */
@@ -47,10 +63,12 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1000;
+    z-index: 998;
     background: linear-gradient(180deg, rgba(15, 15, 30, 0.95) 0%, rgba(15, 15, 30, 0) 100%);
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
+    height: 13VH;
+
 }
 
 .header.scrolled {
@@ -62,7 +80,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 0;
     gap: 30px;
 }
 
